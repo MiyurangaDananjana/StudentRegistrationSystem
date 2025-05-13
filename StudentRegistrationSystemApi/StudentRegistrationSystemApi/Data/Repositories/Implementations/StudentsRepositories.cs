@@ -73,6 +73,7 @@ namespace StudentRegistrationSystemApi.Data.Repositories.Implementations
                 Email = result.Email,
                 NicNumber = result.NicNumber,
                 DateOfBirth = result.DateOfBirth,
+                Address = result.Address,
                 ProfilePhoto = result.ProfilePhoto
             };
 

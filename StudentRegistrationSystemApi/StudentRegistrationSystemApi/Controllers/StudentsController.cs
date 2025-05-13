@@ -70,7 +70,8 @@ namespace StudentRegistrationSystemApi.Controllers
                 Email = student.Email,
                 NicNumber = student.NicNumber,
                 DateOfBirth = student.DateOfBirth,
-                ProfilePhoto = filePath
+                ProfilePhoto = filePath,
+                Address = student.Address
             };
 
             await _studentsRepositories.AddStudentAsync(studentEntity);
@@ -135,7 +136,8 @@ namespace StudentRegistrationSystemApi.Controllers
                 NicNumber = student.NicNumber,
                 DateOfBirth = student.DateOfBirth,
                 ProfilePhoto = filePath,
-                CreateBy = DateTime.Now
+                CreateBy = DateTime.Now,
+                Address = student.Address
             };
 
             await _studentsRepositories.UpdateStudentAsync(manageDetails);

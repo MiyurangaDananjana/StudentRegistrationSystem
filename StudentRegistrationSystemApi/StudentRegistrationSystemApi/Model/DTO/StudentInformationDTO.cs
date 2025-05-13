@@ -35,5 +35,7 @@ namespace StudentRegistrationSystemApi.Model.DTO
         public string? ProfilePhoto { get; set; }
 
         public IFormFile? FileInfo { get; set; }
+
+        public string? Address { get; set; }
     }
 }

@@ -29,5 +29,7 @@ namespace StudentRegistrationSystemApi.Model.Entity
 
         public DateTime CreateBy { get; set; } = DateTime.UtcNow;
 
+        public string? Address { get; set; }
+
     }
 }
