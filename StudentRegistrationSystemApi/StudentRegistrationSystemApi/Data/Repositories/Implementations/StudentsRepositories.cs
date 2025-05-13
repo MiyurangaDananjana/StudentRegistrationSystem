@@ -1,5 +1,6 @@
 ﻿using Serilog;
 using StudentRegistrationSystemApi.Data.Repositories.Interfaces;
+using StudentRegistrationSystemApi.Model.DTO;
 using StudentRegistrationSystemApi.Model.Entity;
 
 namespace StudentRegistrationSystemApi.Data.Repositories.Implementations
@@ -40,15 +41,42 @@ namespace StudentRegistrationSystemApi.Data.Repositories.Implementations
             }
         }
 
-        public Task<IEnumerable<StudentInformation>> GetAllStudentsAsync()
+        public Task<IEnumerable<StudentInformationDTO>> GetAllStudentsAsync()
         {
-            return Task.FromResult<IEnumerable<StudentInformation>>(_context.StudentInformations.ToList());
+            return Task.FromResult<IEnumerable<StudentInformationDTO>>(_context.StudentInformations.Select(
+                x => new StudentInformationDTO
+                {
+                    Id = x.Id,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    MobileNumber = x.MobileNumber,
+                    Email = x.Email,
+                    NicNumber = x.NicNumber
+                }
+                ).ToList());
         }
 
-        public Task<StudentInformation> GetStudentByIdAsync(int id)
+        public Task<StudentInformationDTO> GetStudentByIdAsync(int id)
         {
-            _context.StudentInformations.Find(id);
-            return Task.FromResult<StudentInformation>(_context.StudentInformations.Find(id));
+            var result = _context.StudentInformations.Find(id);
+            if (result == null)
+            {
+                return Task.FromResult<StudentInformationDTO>(null);
+            }
+
+            var studentDetails = new StudentInformationDTO
+            {
+                Id = result.Id,
+                FirstName = result.FirstName,
+                LastName = result.LastName,
+                MobileNumber = result.MobileNumber,
+                Email = result.Email,
+                NicNumber = result.NicNumber,
+                DateOfBirth = result.DateOfBirth,
+                ProfilePhoto = result.ProfilePhoto
+            };
+
+            return Task.FromResult(studentDetails);
         }
 
         public Task UpdateStudentAsync(StudentInformation student)

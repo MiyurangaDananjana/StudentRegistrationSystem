@@ -25,5 +25,9 @@ namespace StudentRegistrationSystemApi.Model.Entity
         [Required]
         public required DateTime DateOfBirth { get; set; }
 
+        public  string? ProfilePhoto { get; set; }
+
+        public DateTime CreateBy { get; set; } = DateTime.UtcNow;
+
     }
 }

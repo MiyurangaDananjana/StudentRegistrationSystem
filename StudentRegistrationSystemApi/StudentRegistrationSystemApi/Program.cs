@@ -23,17 +23,14 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins", builder =>
     {
-        builder.WithOrigins("http://localhost:3001", "http://localhost:3000") // Add your frontend URLs here
+        builder.WithOrigins("http://localhost:4200", "http://localhost:4200") // Add your frontend URLs here
                .AllowAnyHeader()
                .AllowAnyMethod();
     });
 });
 
-
-
 builder.Services.AddScoped<IStudentsRepositories, StudentsRepositories>();
 builder.Services.AddScoped<IStudentsService, StudentsService>();
-
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -51,7 +48,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
+app.UseStaticFiles();
 // Enable CORS middleware
 app.UseCors("AllowAllOrigins");
 
