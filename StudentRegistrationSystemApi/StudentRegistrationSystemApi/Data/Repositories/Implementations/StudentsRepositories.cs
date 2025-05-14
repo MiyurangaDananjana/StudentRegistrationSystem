@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using Microsoft.EntityFrameworkCore;
+using Serilog;
 using StudentRegistrationSystemApi.Data.Repositories.Interfaces;
 using StudentRegistrationSystemApi.Model.DTO;
 using StudentRegistrationSystemApi.Model.Entity;
@@ -106,6 +107,37 @@ namespace StudentRegistrationSystemApi.Data.Repositories.Implementations
                 Log.Error(ex, "UpdateStudentAsync: An error occurred while updating the student with ID {StudentId}.", student.Id);
                 throw;
             }
+        }
+
+        public async Task<(List<StudentInformationDTO>, int)> GetPaginatedStudentsAsync(PaginationParameters pagination)
+        {
+            var query = _context.StudentInformations.AsQueryable();
+
+            var totalCount = await query.CountAsync();
+
+            var pageNumber = pagination.PageNumber < 1 ? 1 : pagination.PageNumber;
+            var pageSize = pagination.PageSize < 1 ? 10 : pagination.PageSize;
+            if (pageSize > 50) pageSize = 50;
+
+            var students = await query
+                .OrderBy(s => s.Id)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(s => new StudentInformationDTO
+                {
+                    Id = s.Id,
+                    FirstName = s.FirstName,
+                    LastName = s.LastName,
+                    MobileNumber = s.MobileNumber,
+                    Email = s.Email,
+                    NicNumber = s.NicNumber,
+                    DateOfBirth = s.DateOfBirth,
+                    ProfilePhoto = s.ProfilePhoto,
+                    Address = s.Address
+                })
+                .ToListAsync();
+
+            return (students, totalCount);
         }
     }
 }

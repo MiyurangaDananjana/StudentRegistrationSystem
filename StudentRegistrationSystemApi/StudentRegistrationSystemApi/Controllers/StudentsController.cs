@@ -16,11 +16,23 @@ namespace StudentRegistrationSystemApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllStudents()
+        public async Task<IActionResult> GetAllStudents([FromQuery] PaginationParameters pagination)
         {
-            var students = await _studentsRepositories.GetAllStudentsAsync();
-            return Ok(students);
+            var (students, totalCount) = await _studentsRepositories.GetPaginatedStudentsAsync(pagination);
+
+            var response = new PaginatedResponse<StudentInformationDTO>
+            {
+                Items = students,
+                TotalCount = totalCount,
+                PageNumber = pagination.PageNumber,
+                PageSize = pagination.PageSize
+            };
+
+            return Ok(response);
         }
+
+
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetStudentById(int id)
         {
