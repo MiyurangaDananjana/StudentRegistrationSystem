@@ -31,8 +31,6 @@ namespace StudentRegistrationSystemApi.Controllers
             return Ok(response);
         }
 
-
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetStudentById(int id)
         {
